@@ -3,20 +3,16 @@
  * Later, it will be separated up as we learn more about modules in TypeScript.
  */
 
-function autobind(
-  _: any,
-  _2: string,
-  descriptor: PropertyDescriptor
-) {
-    const originalMethod = descriptor.value;
-    const adjDescriptor: PropertyDescriptor = {
-        configurable: true,
-        get() {
-            const boundFn = originalMethod.bind(this);
-            return boundFn;
-        }
-    }
-    return adjDescriptor;
+function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    get() {
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    },
+  };
+  return adjDescriptor;
 }
 
 class ProjectInput {
@@ -48,12 +44,21 @@ class ProjectInput {
     this.attach();
   }
 
+  private gatherUserInput(): [string, string, number] {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    // TODO: Add input validation
+    return [enteredTitle, enteredDescription, +enteredPeople];
+  }
+
   @autobind
   private submitHandler(event: Event) {
     event.preventDefault();
-    console.log(this.titleInputElement.value);
-    console.log(this.descriptionInputElement.value);
-    console.log(this.peopleInputElement.value);
+    const userInput = this.gatherUserInput();
+    console.log(userInput);
+    
   }
 
   private configure() {
